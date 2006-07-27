@@ -3,7 +3,7 @@ import sys
 from actions.ActionMap import *
 from passiveactions.PassiveActionMap import *
 from conf.users import *
-
+from wmd import parser
 class irc:
 
     def __init__(self, server=None, nick=None, name=None, port=6667):
@@ -20,7 +20,6 @@ class irc:
         Sets the servername.
         """
         self.server = server
-
     def setNick(self, nick):
         """
         Sets the nickname.
@@ -43,7 +42,7 @@ class irc:
         """
         Loads the actions internally.
         """
-        
+        pass
 
     def connect(self):
         """
@@ -78,32 +77,34 @@ class irc:
         Main Event Loop that parses generic commands
         """
         while True:
-           data = self.irc.recv(4096)
-           # Passive Actions
-           try:
-               for key in passiveactions.keys():
-                   pa = passiveactions[key].getAction(data, user)
-                   if pa:
-                       self.send(pa)
-               # Direct Actions
-               if data.find(self.nick + ':') != -1:
-                   curuser = data[1:data.index('!')]
-                   if curuser in user:
-                       input = data.split()
-                       for key in actions.keys():
-                           if data.find(key) != -1:
-                               self.send(actions[key].getAction(data))
-                               break
-                   else:
-                       input = data.split()
-                       self.send('PRIVMSG ' + input[2] + ' :' + curuser + ': stop bothering me jerk.')
-           except Exception,e:
-               print "Action failed"
-               print e
+            data = self.irc.recv(4096)
+            #obj_data = parser.ircparse(data)
+
+            # Passive Actions
+            try:
+                for key in passiveactions.keys():
+                    pa = passiveactions[key].getAction(data, user)
+                    if pa:
+                        self.send(pa)
+            # Direct Actions
+                if data.find(self.nick + ':') != -1:
+                    curuser = data[1:data.index('!')]
+                    if curuser in user:
+                        input = data.split()
+                        for key in actions.keys():
+                            if data.find(key) != -1:
+                                self.send(actions[key].getAction(data))
+                                break
+                    else:
+                        input = data.split()
+                        self.send('PRIVMSG ' + input[2] + ' :' + curuser + ': stop bothering me jerk.')
+            except Exception,e:
+                print "Action failed"
+                print e
 
 
 if __name__ == '__main__':
-    i = irc('SERVER', 'NICK', 'USER')
+    i = irc('irc.efnet.org', 'warmachine', 'omgident')
     i.connect()
-    i.join('#CHANNEL')
+    i.join('#zzq')
     i.MainLoop()
