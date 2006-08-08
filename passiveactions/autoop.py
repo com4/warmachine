@@ -5,11 +5,13 @@ class autoop:
 
     def getAction(self, data, users):
         try:
-            input = data.split()
-            if 'JOIN' in input[1]:
-                user = data[1:data.index('!')]
+            if data.command == 'JOIN':
+                user = data.prefix[0:data.prefix.index('!')]
                 if user in users:
                     print "autoop"
-                    return 'MODE ' + input[2][1:] + ' +o ' + user
+
+                    if data.params[0] == ':':
+                        data.params = data.params[1:]
+                    return 'MODE ' + data.params + ' +o ' + user
         except:
             return False

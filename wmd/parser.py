@@ -28,13 +28,15 @@ class ircparse(object):
             pass
 
         # Command comes 2nd (Or first if the prefix is missing) 
-        self.command = data.split(' ')[1]
+        if len(data.split(' ')) > 1:
+            self.command = data.split(' ')[1]
 
         # Finally we reconstruct the parameters. We'll let the plugins figure out
         # what they mean since they could potentially be very different.
-        for param in data.split(' ')[2:]:
-            self.params += param + " "
-        self.params.strip()
+        if len(data.split(' ')) > 2:
+            for param in data.split(' ')[2:]:
+                self.params += param + " "
+            self.params.strip()
 
 class configparse(object):
     def __init__(self, filename):

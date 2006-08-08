@@ -89,13 +89,22 @@ class irc:
             for line in data.split('\r\n'):
                 obj_data = parser.ircparse(line)
                 #pass to action handlers here...
+                print "!" + obj_data.prefix + "~" + obj_data.command + "~" + obj_data.params
+                try:
+                    for key in passiveactions.keys():
+                        pa = passiveactions[key].getAction(obj_data, user)
+                        if pa:
+                            self.send(pa)
+                except Exception,e:
+                    print "Action failed"
+                    print e
 
             # Passive Actions
             try:
-                for key in passiveactions.keys():
-                    pa = passiveactions[key].getAction(data, user)
-                    if pa:
-                        self.send(pa)
+            #    for key in passiveactions.keys():
+            #        pa = passiveactions[key].getAction(data, user)
+            #        if pa:
+            #            self.send(pa)
             # Direct Actions
                 if data.find(self.nick + ':') != -1:
                     curuser = data[1:data.index('!')]
@@ -115,7 +124,7 @@ class irc:
 
 
 if __name__ == '__main__':
-    i = irc('localhost', 'warmachine', 'omgident')
+    i = irc('irc.servercentral.net', 'warmachine', 'omgident')
     i.connect()
     i.join('#zzq')
     i.MainLoop()
