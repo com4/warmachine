@@ -8,10 +8,6 @@ class ircparse(object):
         
         self._rawdata = data
 
-        #print "x" * 80
-        #print data
-        #print "xo" * 40
-
         if data != '':
             self._process_data(data)
 
@@ -39,3 +35,9 @@ class ircparse(object):
         for param in data.split(' ')[2:]:
             self.params += param + " "
         self.params.strip()
+
+class configparse(object):
+    def __init__(self, filename):
+        self.filename = filename
+
+
