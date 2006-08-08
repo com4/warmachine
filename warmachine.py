@@ -78,7 +78,17 @@ class irc:
         """
         while True:
             data = self.irc.recv(4096)
-            #obj_data = parser.ircparse(data)
+
+            if data == '':
+                continue
+
+            # Buffering for MOTD.
+            if data[-1] != '\n':
+                data = data + self.irc.recv(4096)
+
+            for line in data.split('\r\n'):
+                obj_data = parser.ircparse(line)
+                #pass to action handlers here...
 
             # Passive Actions
             try:
@@ -97,14 +107,15 @@ class irc:
                                 break
                     else:
                         input = data.split()
-                        self.send('PRIVMSG ' + input[2] + ' :' + curuser + ': stop bothering me jerk.')
+                        self.send('PRIVMSG ' + input[2] + ' :' + curuser +
+                            ': stop bothering me jerk.')
             except Exception,e:
                 print "Action failed"
                 print e
 
 
 if __name__ == '__main__':
-    i = irc('irc.efnet.org', 'warmachine', 'omgident')
+    i = irc('localhost', 'warmachine', 'omgident')
     i.connect()
     i.join('#zzq')
     i.MainLoop()

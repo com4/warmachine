@@ -4,6 +4,7 @@ class ircparse(object):
     def __init__(self, data):
         self.prefix =''
         self.command = ''
+        self.params = ''
         
         self._rawdata = data
 
@@ -11,7 +12,8 @@ class ircparse(object):
         #print data
         #print "xo" * 40
 
-        self._process_data(data)
+        if data != '':
+            self._process_data(data)
 
     def _process_data(self, data):
         data = data.strip()
@@ -28,3 +30,12 @@ class ircparse(object):
             #
             # TODO: Get the server name from the parent object.
             pass
+
+        # Command comes 2nd (Or first if the prefix is missing) 
+        self.command = data.split(' ')[1]
+
+        # Finally we reconstruct the parameters. We'll let the plugins figure out
+        # what they mean since they could potentially be very different.
+        for param in data.split(' ')[2:]:
+            self.params += param + " "
+        self.params.strip()
