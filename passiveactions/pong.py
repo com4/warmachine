@@ -5,9 +5,12 @@ class pong:
 
     def getAction(self, data, users):
         try:
-            if data.find ( 'PING' ) != -1:
-                print 'Ponged ' +  data.split()[1]
-                return 'PONG ' + data.split()[1]
+            if data.command == 'PING':
+                if data.params[0] == ':':
+                    server = data.params[1:]
+                else:
+                    server = data.params
+                print 'Ponged ' +  server
+                return 'PONG ' + server
         except:
             return False
-       

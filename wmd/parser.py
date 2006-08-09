@@ -11,6 +11,13 @@ class ircparse(object):
         if data != '':
             self._process_data(data)
 
+    def getUsername(self):
+        # Usernames are from 0 to the !... extract it out of we can.
+        if self.prefix.find('!') > -1:
+            return self.prefix[0:self.prefix.index('!')]
+        else:
+            return False
+
     def _process_data(self, data):
         data = data.strip()
         
@@ -20,21 +27,22 @@ class ircparse(object):
         # colon and the prefix.
         if data[0] == ':':
             self.prefix = data[1:].split(' ')[0]
+            start_at = 1
         else:
             # If the prefix is missing from the message, it is assumed to have
             # originated from the connection from which it was received.
             #
             # TODO: Get the server name from the parent object.
-            pass
+            start_at = 0
 
         # Command comes 2nd (Or first if the prefix is missing) 
-        if len(data.split(' ')) > 1:
-            self.command = data.split(' ')[1]
+        if len(data.split(' ')) > start_at:
+            self.command = data.split(' ')[start_at]
 
         # Finally we reconstruct the parameters. We'll let the plugins figure out
         # what they mean since they could potentially be very different.
-        if len(data.split(' ')) > 2:
-            for param in data.split(' ')[2:]:
+        if len(data.split(' ')) > (start_at + 1):
+            for param in data.split(' ')[(start_at+1):]:
                 self.params += param + " "
             self.params.strip()
 

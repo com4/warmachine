@@ -101,15 +101,16 @@ class irc:
 
             # Passive Actions
             try:
-            #    for key in passiveactions.keys():
-            #        pa = passiveactions[key].getAction(data, user)
-            #        if pa:
-            #            self.send(pa)
+                #for key in passiveactions.keys():
+                #    pa = passiveactions[key].getAction(data, user)
+                #    if pa:
+                #        self.send(pa)
             # Direct Actions
                 if data.find(self.nick + ':') != -1:
                     curuser = data[1:data.index('!')]
                     if curuser in user:
                         input = data.split()
+                        print "$$ " + input
                         for key in actions.keys():
                             if data.find(key) != -1:
                                 self.send(actions[key].getAction(data))
@@ -124,7 +125,7 @@ class irc:
 
 
 if __name__ == '__main__':
-    i = irc('irc.servercentral.net', 'warmachine', 'omgident')
+    i = irc('irc.inter.net.il', 'warmachine', 'omgident')
     i.connect()
     i.join('#zzq')
     i.MainLoop()
