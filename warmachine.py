@@ -10,32 +10,9 @@ class irc:
         """
         IRC connection library that needs at least server, nick and name
         """
-        self.setServer(server)
-        self.setNick(nick)
-        self.setName(name)
-        self.setPort(port)
-
-    def setServer(self, server):
-        """
-        Sets the servername.
-        """
         self.server = server
-    def setNick(self, nick):
-        """
-        Sets the nickname.
-        """
         self.nick = nick
-
-    def setName(self, name):
-        """
-        Sets the name.
-        """
         self.name = name
-
-    def setPort(self, port):
-        """
-        Sets the port number to connect to.
-        """
         self.port = port
 
     def locaActions(self):
