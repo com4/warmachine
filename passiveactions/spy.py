@@ -10,14 +10,14 @@ class spy:
 
     def getAction(self, data, users):
         try:
-            user = data[1:data.index('!')]
+            user = data.getUsername()
             if user in spyusers:
                 if user in data:
                     input = data.split()
                     words = ""
-                    for word in input[3:]:
+                    for word in data.prefix.split(' ')[1:]:
                         words += ' ' + word
-                    return 'PRIVMSG ' + spymaster + ' :' + user + ' in ' + input[2] + ' said "' + words[2:] + '"'
+                    return 'PRIVMSG ' + spymaster + ' :' + user + ' in ' + data.prefix.split(' ')[0] + ' said "' + words[2:] + '"'
         except:
             return False
        
