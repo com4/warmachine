@@ -4,4 +4,5 @@ class part:
         self = []
 
     def getAction(self, data):
-        return 'PART ' + data[data.index('part')+5:]
+        channel = data.params.split(' ')[3]
+        return 'PART ' + channel

@@ -4,6 +4,7 @@ class kick:
         self = []
 
     def getAction(self, data):
-        input = data.split(' ')
-        return 'KICK ' + input[5] + ' ' + input[6]
+        channel = data.params[0:data.params.index(' ')]
+        user = data.params.split(' ')[3]
+        return 'KICK ' + channel + ' ' + user
 

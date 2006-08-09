@@ -4,8 +4,12 @@ class settopic:
         self = []
 
     def getAction(self, data):
-        input = data.split(' ')
-        words = ""
-        for word in input[6:]:
-            words += ' ' + word
-        return 'TOPIC ' + input[5] + ' :' + words[1:]
+        channel = data.params.split(' ')[3]
+        words = data.params.split(' ')[4:]
+
+
+        say = "" 
+        for word in words:
+            say += word + " "
+
+        return 'TOPIC ' + channel + ' :' + say

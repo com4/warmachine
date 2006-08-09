@@ -4,8 +4,12 @@ class say:
        self = []
 
     def getAction(self, data):
-        input = data.split(' ')
-        words = ""
-        for word in input[6:]:
-            words += ' ' + word
-        return 'PRIVMSG ' + input[5] + ' :' + words[1:]
+        channel = data.params.split(' ')[3]
+        words = data.params.split(' ')[4:]
+
+
+        say = "" 
+        for word in words:
+            say += word + " "
+
+        return 'PRIVMSG ' + channel + ' :' + say

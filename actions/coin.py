@@ -13,5 +13,5 @@ class coin:
            thecoin = "The coin lands on HEAD."
         else:
            thecoin = "The coin lands on TAILS."
-        input = data.split(' ')
-        return 'PRIVMSG ' + input[4] + ' :' + thecoin
+        channel = data.params[0:data.params.index(' ')]
+        return 'PRIVMSG ' + channel + ' :' + thecoin

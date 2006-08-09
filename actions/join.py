@@ -4,4 +4,5 @@ class join:
         self = []
 
     def getAction(self, data):
-        return 'JOIN ' + data[data.index('join')+5:]
+        channel = data.params.split(' ')[3]
+        return 'JOIN ' + channel

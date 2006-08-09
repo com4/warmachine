@@ -4,5 +4,6 @@ class deop:
         self = []
 
     def getAction(self, data):
-        input = data.split(' ')
-        return 'MODE ' + input[5] + ' -o ' + input[6]
+        channel = data.params[0:data.params.index(' ')]
+        user = data.params.split(' ')[3]
+        return 'MODE ' + channel + ' -o ' + user

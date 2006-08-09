@@ -89,40 +89,27 @@ class irc:
             for line in data.split('\r\n'):
                 obj_data = parser.ircparse(line)
                 #pass to action handlers here...
+                if (obj_data.prefix == '') and (obj_data.command == '') and (obj_data.params == ''):
+                    continue
+
                 print "!" + obj_data.prefix + "~" + obj_data.command + "~" + obj_data.params
                 try:
                     for key in passiveactions.keys():
                         pa = passiveactions[key].getAction(obj_data, user)
                         if pa:
                             self.send(pa)
+
+                    if obj_data.params.find(self.nick + ':') > -1:
+                        curuser = obj_data.getUsername()
+                        if curuser not in user:
+                            continue
+                        for key in actions.keys():
+                            if obj_data.params.find(key) > -1:
+                                self.send(actions[key].getAction(obj_data))
+
                 except Exception,e:
                     print "Action failed"
                     print e
-
-            # Passive Actions
-            try:
-                #for key in passiveactions.keys():
-                #    pa = passiveactions[key].getAction(data, user)
-                #    if pa:
-                #        self.send(pa)
-            # Direct Actions
-                if data.find(self.nick + ':') != -1:
-                    curuser = data[1:data.index('!')]
-                    if curuser in user:
-                        input = data.split()
-                        print "$$ " + input
-                        for key in actions.keys():
-                            if data.find(key) != -1:
-                                self.send(actions[key].getAction(data))
-                                break
-                    else:
-                        input = data.split()
-                        self.send('PRIVMSG ' + input[2] + ' :' + curuser +
-                            ': stop bothering me jerk.')
-            except Exception,e:
-                print "Action failed"
-                print e
-
 
 if __name__ == '__main__':
     i = irc('irc.inter.net.il', 'warmachine', 'omgident')
