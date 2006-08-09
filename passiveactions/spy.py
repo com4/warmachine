@@ -12,8 +12,7 @@ class spy:
         try:
             user = data.getUsername()
             if user in spyusers:
-                if user in data:
-                    input = data.split()
+                if user in data.params:
                     words = ""
                     for word in data.prefix.split(' ')[1:]:
                         words += ' ' + word

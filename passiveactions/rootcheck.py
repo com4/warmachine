@@ -8,8 +8,11 @@ class rootcheck:
             user = data.getUsername()
             if 'JOIN' in data.command:
                 if 'root' in data.prefix:
-                    cmd = "PRIVMSG " + data.prefix + " :" + user +": Root?!?!?!!??!"
-                    cmd += "\r\nKICK " + data.prefix + " " + user + " :Root + irc = kick"
+                    if data.params[0] == ':':
+                        data.params = data.params[1:]
+
+                    cmd = "PRIVMSG " + data.params + " :" + user +": Root?!?!?!!??!"
+                    cmd += "\r\nKICK " + data.params + " " + user + " :Root + irc = kick"
                     return cmd
         except:
             return False
