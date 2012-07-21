@@ -1,7 +1,5 @@
 import socket
 
-from actions.ActionMap import *
-from passiveactions.PassiveActionMap import *
 from wmd import parser
 
 import settings
@@ -16,12 +14,9 @@ class IRC(object):
         self.nick = nick
         self.name = name
         self.port = port
+        self.actions = []
 
-    def locaActions(self):
-        """
-        Loads the actions internally.
-        """
-        pass
+        self.load_actions()
 
     def connect(self):
         """
@@ -37,7 +32,7 @@ class IRC(object):
         """
         Joins a channel
         """
-        self.send('JOIN ' + chan)
+        self.rawsend('JOIN ' + chan)
 
     def log(self, string):
         """
@@ -45,11 +40,33 @@ class IRC(object):
         """
         print 'log: ' + string
 
-    def send(self, command):
+    def privmsg(self, dest, msg):
+        """
+        send a privmsg to dest
+        """
+        self.rawsend('PRIVMSG %s :%s' % (dest, msg))
+
+    def rawsend(self, command):
         """
         Sends commands straight to the irc server.
         """
         self.irc.send(command + '\r\n')
+
+    def load_actions(self):
+        """
+        Loads the actions internally.
+        """
+        for action in settings.ACTIONS:
+            self.load_action(action)
+
+    def load_action(self, path):
+        """
+        Loads the provided action
+        """
+        module_name, class_name = path.rsplit('.', 1)
+        module = __import__(module_name, globals(), locals(), [class_name], -1)
+        classz = getattr(module, class_name)
+        self.actions.insert(0, classz())
 
     def __call__(self, *args, **kwargs):
         """
@@ -66,26 +83,13 @@ class IRC(object):
                 data = data + self.irc.recv(4096)
 
             for line in data.split('\r\n'):
-                obj_data = parser.ircparse(line)
+                obj_data = parser.IRCParse(line)
                 #pass to action handlers here...
                 if (obj_data.prefix == '') and (obj_data.command == '') and (obj_data.params == ''):
                     continue
 
                 print "!" + obj_data.prefix + "~" + obj_data.command + "~" + obj_data.params
-                try:
-                    for key in passiveactions.keys():
-                        pa = passiveactions[key].getAction(obj_data, user)
-                        if pa:
-                            self.send(pa)
-
-                    if obj_data.params.find(self.nick + ':') > -1 or obj_data.params.find(':!') > -1:
-                        curuser = obj_data.getUsername()
-                        if curuser not in user:
-                            continue
-                        for key in actions.keys():
-                            if obj_data.params.find(key) > -1:
-                                self.send(actions[key].getAction(obj_data))
-
-                except Exception,e:
-                    print "Action failed"
-                    print e
+                for action in self.actions:
+                    retval = action.recv_msg(self, obj_data)
+                    if retval:
+                        self.rawsend(retval)

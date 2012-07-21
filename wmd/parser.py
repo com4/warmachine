@@ -1,4 +1,4 @@
-class ircparse(object):
+class IRCParse(object):
     #http://www.irchelp.org/irchelp/rfc/rfc.html
 
     def __init__(self, data):
@@ -11,7 +11,7 @@ class ircparse(object):
         if data != '':
             self._process_data(data)
 
-    def getUsername(self):
+    def get_username(self):
         # Usernames are from 0 to the !... extract it out of we can.
         if self.prefix.find('!') > -1:
             return self.prefix[0:self.prefix.index('!')]
@@ -45,9 +45,3 @@ class ircparse(object):
             for param in data.split(' ')[(start_at+1):]:
                 self.params += param + " "
             self.params.strip()
-
-class configparse(object):
-    def __init__(self, filename):
-        self.filename = filename
-
-
