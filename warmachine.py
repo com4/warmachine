@@ -79,7 +79,7 @@ class IRC(object):
                         if pa:
                             self.send(pa)
 
-                    if obj_data.params.find(self.nick + ':') > -1:
+                    if obj_data.params.find(self.nick + ':') > -1 or obj_data.params.find(':!') > -1:
                         curuser = obj_data.getUsername()
                         if curuser not in user:
                             continue
