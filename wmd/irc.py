@@ -2,8 +2,9 @@ import socket
 
 from actions.ActionMap import *
 from passiveactions.PassiveActionMap import *
-from conf.users import *
 from wmd import parser
+
+import settings
 
 class IRC(object):
 
