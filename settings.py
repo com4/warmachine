@@ -17,6 +17,7 @@ ADMINS = ('com4',)
 
 ACTIONS = (
     'wmd.actions.passive.nickserv.IdentWithNickserv',
+    'wmd.actions.passive.pong.RespondToPing',
 )
 
 try:
