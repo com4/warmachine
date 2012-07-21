@@ -52,7 +52,7 @@ class IRC(object):
         """
         self.irc.send(command + '\r\n')
 
-    def MainLoop(self):
+    def __call__(self, *args, **kwargs):
         """
         Main Event Loop that parses generic commands
         """
@@ -93,8 +93,8 @@ class IRC(object):
 
 if __name__ == '__main__':
     import settings
-    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT)
+    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT, settings.PORT)
     i.connect()
     for channel in settings.CHANNELS:
         i.join(channel)
-    i.MainLoop()
+    i()
