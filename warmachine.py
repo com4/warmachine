@@ -92,7 +92,9 @@ class IRC(object):
                     print e
 
 if __name__ == '__main__':
-    i = IRC('irc.freenode.org', 'warmachine', 'warmachine')
+    import settings
+    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT)
     i.connect()
-    i.join('#antitech-dev')
+    for channel in settings.CHANNELS:
+        i.join(channel)
     i.MainLoop()
