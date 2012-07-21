@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-
-import socket
-import sys
-from actions.ActionMap import *
-from passiveactions.PassiveActionMap import *
-from conf.users import *
-from wmd import parser
-
 class IRC(object):
 
     def __init__(self, server=None, nick=None, name=None, port=6667):
@@ -90,11 +81,3 @@ class IRC(object):
                 except Exception,e:
                     print "Action failed"
                     print e
-
-if __name__ == '__main__':
-    import settings
-    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT, settings.PORT)
-    i.connect()
-    for channel in settings.CHANNELS:
-        i.join(channel)
-    i()

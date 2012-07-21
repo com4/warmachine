@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+from wmd.irc import IRC
+import settings
+
+if __name__ == '__main__':
+    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT, settings.PORT)
+    i.connect()
+    for channel in settings.CHANNELS:
+        i.join(channel)
+    i()
