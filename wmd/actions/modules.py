@@ -8,7 +8,7 @@ class ReloadModule(Action):
 
         if username in settings.ADMINS:
             args = obj_data.params.split(" ")
-            if "PRIVMSG" in obj_data.command and "RELOAD" in args[1].upper():
+            if "PRIVMSG" in obj_data.command and "RELOADMODULE" in args[1].upper():
                 module = args[2]
                 if not module in irc.actions:
                     irc.privmsg(username, "Invalid Module: %s")
@@ -32,7 +32,7 @@ class LoadModule(Action):
 
         if username in settings.ADMINS:
             args = obj_data.params.split(" ")
-            if "PRIVMSG" in obj_data.command and "LOAD" in args[1].upper():
+            if "PRIVMSG" in obj_data.command and "LOADMODULE" in args[1].upper():
                 module_path = args[2]
                 if module_path in irc.actions:
                     irc.privmsg(username, "Module %s already loaded" % (module_path,))
@@ -50,7 +50,7 @@ class ListModules(Action):
 
         if username in settings.ADMINS:
             args = obj_data.params.split(" ")
-            if "PRIVMSG" in obj_data.command and "LIST" in args[1].upper():
+            if "PRIVMSG" in obj_data.command and "LISTMODULES" in args[1].upper():
                 for module in irc.actions:
                     msg = module
                     irc.privmsg(username, msg)
