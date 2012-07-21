@@ -64,7 +64,12 @@ class IRC(object):
         Loads the provided action
         """
         module_name, class_name = path.rsplit('.', 1)
-        module = __import__(module_name, globals(), locals(), [class_name], -1)
+        try:
+            module = __import__(module_name, globals(), locals(), [class_name], -1)
+        except ImportError:
+            self.log("Error loading module: %s" %(path,))
+            return
+
         classz = getattr(module, class_name)
         self.actions[class_name] = classz()
 
@@ -93,13 +98,19 @@ class IRC(object):
                 print "<- " + obj_data.prefix + "~" + obj_data.command + "~" + obj_data.params
 
                 modules_to_load = []
+                modules_to_unload = []
                 for plugin_name in self.actions:
                     retval = self.actions[plugin_name].recv_msg(self, obj_data)
                     if type(retval) == type(dict()):
                         if retval.has_key('load'):
                             modules_to_load.append(retval['load'])
+                        if retval.has_key('unload'):
+                            modules_to_unload.append(retval['unload'])
                     elif type(retval) == type('str is str'):
                         self.rawsend(retval)
 
                 for module in modules_to_load:
                     self.load_action(module)
+                for module in modules_to_unload:
+                    if self.actions.has_key(module):
+                        del(self.actions[module])

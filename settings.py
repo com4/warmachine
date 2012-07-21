@@ -21,6 +21,8 @@ ACTIONS = (
     'wmd.actions.modules.ReloadModule',
     'wmd.actions.modules.LoadModule',
     'wmd.actions.modules.ListModules',
+    'wmd.actions.modules.UnloadModule',
+
 )
 
 try:
