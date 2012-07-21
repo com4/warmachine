@@ -14,8 +14,8 @@ class IdentWithNickserv(Action):
             if 'identify' in msg.lower()\
             and not self.logged_in:
                 msg = 'identify %s' % (settings.NICKSERV_PASSWORD)
-                print "%s: Logging in..." % self.__class__.__name__
+                self.log("Logging in...")
                 irc.privmsg(username, msg)
                 self.logged_in = True
             elif 'are now identified' in msg.lower():
-                print "%s: Logged in." % (self.__class__.__name__)
+                self.log("Logged in.")

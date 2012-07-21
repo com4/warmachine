@@ -14,7 +14,7 @@ class IRC(object):
         self.nick = nick
         self.name = name
         self.port = port
-        self.actions = []
+        self.actions = dict()
 
         self.load_actions()
 
@@ -66,7 +66,7 @@ class IRC(object):
         module_name, class_name = path.rsplit('.', 1)
         module = __import__(module_name, globals(), locals(), [class_name], -1)
         classz = getattr(module, class_name)
-        self.actions.insert(0, classz())
+        self.actions[class_name] = classz()
 
     def __call__(self, *args, **kwargs):
         """
@@ -82,14 +82,24 @@ class IRC(object):
             if data[-1] != '\n':
                 data = data + self.irc.recv(4096)
 
+            # For dynamic loading, we have to add to the actions dictionary after we're through looping. Maybe there
+            # are some other cases to use the post_loop_commands
             for line in data.split('\r\n'):
                 obj_data = parser.IRCParse(line)
                 #pass to action handlers here...
                 if (obj_data.prefix == '') and (obj_data.command == '') and (obj_data.params == ''):
                     continue
 
-                print "!" + obj_data.prefix + "~" + obj_data.command + "~" + obj_data.params
-                for action in self.actions:
-                    retval = action.recv_msg(self, obj_data)
-                    if retval:
+                print "<- " + obj_data.prefix + "~" + obj_data.command + "~" + obj_data.params
+
+                modules_to_load = []
+                for plugin_name in self.actions:
+                    retval = self.actions[plugin_name].recv_msg(self, obj_data)
+                    if type(retval) == type(dict()):
+                        if retval.has_key('load'):
+                            modules_to_load.append(retval['load'])
+                    elif type(retval) == type('str is str'):
                         self.rawsend(retval)
+
+                for module in modules_to_load:
+                    self.load_action(module)

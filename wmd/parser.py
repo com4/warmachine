@@ -18,6 +18,9 @@ class IRCParse(object):
         else:
             return False
 
+    def get_channel(self):
+        return self.get_username()
+
     def _process_data(self, data):
         data = data.strip()
         
