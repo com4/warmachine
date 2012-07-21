@@ -16,7 +16,7 @@ CHANNELS = ('#warmachine-dev',)
 ADMINS = ('com4',)
 
 ACTIONS = (
-    'wmd.actions.nickserv.IdentWithNickserv',
+    'wmd.actions.passive.nickserv.IdentWithNickserv',
 )
 
 try:
