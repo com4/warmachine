@@ -1,3 +1,10 @@
+import socket
+
+from actions.ActionMap import *
+from passiveactions.PassiveActionMap import *
+from conf.users import *
+from wmd import parser
+
 class IRC(object):
 
     def __init__(self, server=None, nick=None, name=None, port=6667):
