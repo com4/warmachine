@@ -1,10 +1,13 @@
+#!/usr/bin/env python
+
 import socket
 import sys
 from actions.ActionMap import *
 from passiveactions.PassiveActionMap import *
 from conf.users import *
 from wmd import parser
-class irc:
+
+class IRC(object):
 
     def __init__(self, server=None, nick=None, name=None, port=6667):
         """
@@ -89,7 +92,7 @@ class irc:
                     print e
 
 if __name__ == '__main__':
-    i = irc('irc.inter.net.il', 'warmachine', 'omgident')
+    i = IRC('irc.freenode.org', 'warmachine', 'warmachine')
     i.connect()
-    i.join('#zzq')
+    i.join('#antitech-dev')
     i.MainLoop()
