@@ -22,6 +22,7 @@ ACTIONS = (
     'wmd.actions.modules.LoadModule',
     'wmd.actions.modules.ListModules',
     'wmd.actions.modules.UnloadModule',
+    'wmd.actions.google.GoogleSearch',
 
 )
 
