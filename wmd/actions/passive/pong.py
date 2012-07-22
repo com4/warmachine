@@ -9,6 +9,6 @@ class RespondToPing(Action):
                 server = obj_data.params[1:]
             else:
                 server = obj_data.params
-            msg = "PONG %s" % server
+            msg = "PONG :%s" % server
             self.log(msg)
             irc.rawsend(msg)
