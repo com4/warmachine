@@ -13,7 +13,7 @@ class GoogleSearch(Action):
         args = obj_data.params.split(" ")
         channel = args[0]
         if channel == settings.NICKNAME:
-            return
+            channel = obj_data.get_username()
 
         if "PRIVMSG" in obj_data.command and ":!google" in args[1].lower():
             search_string = " ".join(args[2:])
