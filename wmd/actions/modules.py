@@ -29,7 +29,6 @@ class ReloadModule(Action):
 class LoadModule(Action):
     def recv_msg(self, irc, obj_data):
         username = obj_data.get_username()
-        print obj_data.__dict__
         if username in settings.ADMINS:
             args = obj_data.params.split(" ")
             if "PRIVMSG" in obj_data.command and ":LOADMODULE" in args[1].upper():
