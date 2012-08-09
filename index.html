@@ -22,16 +22,19 @@
 
         <section id="downloads">
             <a href="https://github.com/antitech/warmachine/" class="btn btn-github">
-                <span class="icon"></span>Source Code</a>
+                <span class="icon"></span>contribute.</a>
         </section>
     </div>
 </header>
 
 <div class="container">
     <section id="main_content">
-        <h3>download</h3>
+        <h3>install.</h3>
 
-        <pre><code class="prettyprint">$ git clone git://github.com/antitech/warmachine.git</code></pre>
+        <pre><code class="prettyprint">git clone git://github.com/antitech/warmachine.git
+cd warmachine
+vim settings.py
+./warmachine</code></pre>
 
         <h3>no bullshit.</h3>
 
@@ -45,8 +48,8 @@ class HelloWorldAction(Action):
         channel = obj_data.get_username()
         args = obj_data.params.split(" ")
         if "PRIVMSG" in obj_data.command and ":!helloworld" in args[1].lower():
-            irc.privmsg(channel, "Hello World!")
-        </code></pre>
+            irc.privmsg(channel, "Hello World!")</code></pre>
+    </section>
 
 </div>
 
