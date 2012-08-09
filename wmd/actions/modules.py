@@ -18,10 +18,6 @@ class ReloadModule(Action):
                     return
                 elif not class_name in irc.actions[module_name][1]:
                     irc.privmsg(self, username, "Invalid Plugin" % class_name)
-                elif class_name == self.__class__.__name__:
-                    irc.privmsg(username, "Unable to reload self. Try restarting")
-                    return
-
                 reload(irc.actions[module_name][0])
                 try:
                     classz = getattr(irc.actions[module_name][0], class_name)
