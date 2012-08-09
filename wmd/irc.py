@@ -14,6 +14,11 @@ class IRC(object):
         self.nick = nick
         self.name = name
         self.port = port
+
+        # the structure
+        #   TODO: Refactor
+        # self.actions["module_name"][0]: the actual module. saved to reload if needed
+        # self.actions["module_name"][1]: dictionary. key = class name, value = class object
         self.actions = dict()
 
         self.load_actions()
@@ -64,10 +69,22 @@ class IRC(object):
         Loads the provided action
         """
         module_name, class_name = path.rsplit('.', 1)
-        try:
-            module = __import__(module_name, globals(), locals(), [class_name], -1)
-        except ImportError:
-            self.log("Error loading module: %s" %(path,))
+
+        if self.actions.has_key(module_name):
+            module = self.actions[module_name][0]
+        else:
+            try:
+                module = __import__(module_name, globals(), locals(), [class_name], -1)
+            except ImportError:
+                self.log("Error loading module: %s" %(path,))
+                return
+
+        if not self.actions.has_key(module_name):
+            self.actions[module_name] = []
+            self.actions[module_name].insert(0, module) # Save the module so it can be reloaded later
+            self.actions[module_name].insert(1, dict())
+        elif class_name in self.actions[module_name][1]:
+            self.log("Class already loaded")
             return
 
         try:
@@ -76,7 +93,7 @@ class IRC(object):
             self.log("Class does not exist in module")
             return
 
-        self.actions[class_name] = classz()
+        self.actions[module_name][1][class_name] = classz()
 
     def __call__(self, *args, **kwargs):
         """
@@ -104,18 +121,20 @@ class IRC(object):
 
                 modules_to_load = []
                 modules_to_unload = []
-                for plugin_name in self.actions:
-                    retval = self.actions[plugin_name].recv_msg(self, obj_data)
-                    if type(retval) == type(dict()):
-                        if retval.has_key('load'):
-                            modules_to_load.append(retval['load'])
-                        if retval.has_key('unload'):
-                            modules_to_unload.append(retval['unload'])
-                    elif type(retval) == type('str is str'):
-                        self.rawsend(retval)
+                for module_name in self.actions:
+                    for class_name in self.actions[module_name][1]:
+                        retval = self.actions[module_name][1][class_name].recv_msg(self, obj_data)
 
-                for module in modules_to_load:
-                    self.load_action(module)
-                for module in modules_to_unload:
-                    if self.actions.has_key(module):
-                        del(self.actions[module])
+                        if type(retval) == type(dict()):
+                            if retval.has_key('load'):
+                                modules_to_load.append(retval['load'])
+                            if retval.has_key('unload'):
+                                modules_to_unload.append(retval['unload'])
+                            elif type(retval) == type('str is str'):
+                                self.rawsend(retval)
+
+                            for module in modules_to_load:
+                                self.load_action(module)
+                            #for module in modules_to_unload:
+                            #    if self.actions.has_key(module):
+                            #        del(self.actions[module])
