@@ -9,6 +9,8 @@ class ReloadModule(Action):
         if username in settings.ADMINS:
             args = obj_data.params.split(" ")
             if "PRIVMSG" in obj_data.command and "RELOADMODULE" in args[1].upper():
+                irc.privmsg(username, "This feature hasn't been implemented yet")
+                return
                 module = args[2]
                 if not module in irc.actions:
                     irc.privmsg(username, "Invalid Module: %s")
@@ -19,7 +21,9 @@ class ReloadModule(Action):
                 module_class = irc.actions[module].__module__
                 module_path = module_class + '.' + module
 
-                reload(irc.actions[module])
+                print dir(irc.actions[module])
+
+                #reload(module_class)
 
                 msg = "Reloaded %s" % (module_path,)
                 self.log(msg)
