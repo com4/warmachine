@@ -18,6 +18,7 @@ ADMINS = ('com4',)
 ACTIONS = (
     'wmd.actions.passive.nickserv.IdentWithNickserv',
     'wmd.actions.passive.pong.RespondToPing',
+    'wmd.actions.passive.rejoin_on_kick.RejoinOnKick',
     'wmd.actions.modules.ReloadModule',
     'wmd.actions.modules.LoadModule',
     'wmd.actions.modules.ListModules',
