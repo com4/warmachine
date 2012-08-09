@@ -48,7 +48,9 @@ class HelloWorldAction(Action):
         channel = obj_data.get_username()
         args = obj_data.params.split(" ")
         if "PRIVMSG" in obj_data.command and ":!helloworld" in args[1].lower():
-            irc.privmsg(channel, "Hello World!")</code></pre>
+            # ... my awesome code
+            irc.privmsg(channel, "Hello World!")
+            return</code></pre>
     </section>
 
 </div>
