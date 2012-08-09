@@ -10,22 +10,28 @@ class ReloadModule(Action):
             args = obj_data.params.split(" ")
             if "PRIVMSG" in obj_data.command and "RELOADMODULE" in args[1].upper():
 
-                class_name = args[2]
+                module_name, class_name = args[2].rsplit('.', 1)
 
-                if not module in irc.actions:
-                    irc.privmsg(username, "Invalid Module: %s")
+
+                if not module_name in irc.actions:
+                    irc.privmsg(username, "Invalid Module: %s" % module_name)
                     return
-                elif module == self.__class__.__name__:
+                elif not class_name in irc.actions[module_name][1]:
+                    irc.privmsg(self, username, "Invalid Plugin" % class_name)
+                elif class_name == self.__class__.__name__:
                     irc.privmsg(username, "Unable to reload self. Try restarting")
                     return
-                module_class = irc.actions[module].__module__
-                module_path = module_class + '.' + module
 
-                print dir(irc.actions[module])
+                reload(irc.actions[module_name][0])
+                try:
+                    classz = getattr(irc.actions[module_name][0], class_name)
+                except AttributeError:
+                    self.log("Class does not exist in module")
+                    return
 
-                #reload(module_class)
+                irc.actions[module_name][1][class_name] = classz()
 
-                msg = "Reloaded %s" % (module_path,)
+                msg = "Reloaded %s.%s" % (module_name, class_name)
                 self.log(msg)
                 irc.privmsg(username, msg)
 
