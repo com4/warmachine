@@ -19,8 +19,7 @@ class ReloadModule(Action):
                 module_class = irc.actions[module].__module__
                 module_path = module_class + '.' + module
 
-                del(irc.actions[module])
-                irc.load_action(module_path)
+                reload(irc.actions[module])
 
                 msg = "Reloaded %s" % (module_path,)
                 self.log(msg)
