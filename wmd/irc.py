@@ -70,7 +70,12 @@ class IRC(object):
             self.log("Error loading module: %s" %(path,))
             return
 
-        classz = getattr(module, class_name)
+        try:
+            classz = getattr(module, class_name)
+        except AttributeError:
+            self.log("Class does not exist in module")
+            return
+
         self.actions[class_name] = classz()
 
     def __call__(self, *args, **kwargs):
