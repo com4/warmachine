@@ -5,24 +5,28 @@
 
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
     <link href="stylesheets/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="font-awesome/css/font-awesome.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="javascripts/prettify.js"></script>
 
-    <title>antitech.github.com by antitech</title>
+    <title>warmachine</title>
 </head>
 
 <body onload="prettyPrint()">
 
 <header>
     <div class="container">
-        <h1>warmachine</h1>
+        <h1><i class="icon-bolt"></i> warmachine</h1>
         <h2>a python developer's irc bot</h2>
 
         <section id="downloads">
-            <a href="https://github.com/antitech/warmachine/" class="btn btn-github">
-                <span class="icon"></span>contribute.</a>
+            <a href="http://antitech.github.com/" class="btn">
+                <span class="icon icon-cloud"></span>antitech.</a>
+            <a href="https://github.com/antitech/warmachine/" class="btn">
+                <span class="icon icon-github"></span>contribute.</a>
+            <a href="#" class="btn">
+                <span class="icon icon-cogs"></span>plugins.</a>
         </section>
     </div>
 </header>
@@ -38,7 +42,10 @@ vim settings.py
 
         <h3>no bullshit.</h3>
 
-        <p>The philosophy behind warmachine is to get out of your way and let you code. A developer shouldn't be required to learn an oversized API just to print hello world on the screen. You know Python, so you know how to write warmachine plugins. All you have to do is write a method that listens for your trigger and go on about your day.</p>
+        <p>The philosophy behind warmachine is to get out of your way and let you code. A developer shouldn't be
+           required to learn an over-sized API just to print hello world on the screen. You know Python, so you know how
+           to write warmachine plugins. All you have to do is write a method that listens for your trigger and go on
+           about your day.</p>
 
         <pre><code class="prettyprint">from wmd.actions import Action
 
