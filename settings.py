@@ -15,6 +15,8 @@ CHANNELS = ('#warmachine-dev',)
 
 ADMINS = ('com4',)
 
+DB_PATH = "warmachine.db"
+
 ACTIONS = (
     'wmd.actions.passive.nickserv.IdentWithNickserv',
     'wmd.actions.passive.pong.RespondToPing',
