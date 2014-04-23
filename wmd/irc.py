@@ -3,17 +3,21 @@ import socket
 from wmd import parser
 
 import settings
+import pprint
 
 class IRC(object):
 
-    def __init__(self, server=None, nick=None, name=None, port=6667):
+    def __init__(self, server=None, nick=None, name=None, password=None,
+                 port=6667):
         """
         IRC connection library that needs at least server, nick and name
         """
+        self.irc = None
         self.server = server
         self.nick = nick
         self.name = name
         self.port = port
+        self.password = password
 
         # the structure
         #   TODO: Refactor
@@ -27,11 +31,29 @@ class IRC(object):
         """
         Connects to the irc server.
         """
+        self.log("Connecting to %s %s" % (self.server, self.port))
         self.irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        using_ssl = False
+        if str(self.port).startswith("+"):
+            using_ssl = True
+            import ssl
+            self.log("Connecting via SSL")
+            self.irc = ssl.wrap_socket(self.irc,
+                                       ca_certs="certs/GeoTrust_Primary_Certification_Authority_-_G2.pem",
+                                       ssl_version=ssl.PROTOCOL_TLSv1
+                                       )
+            self.port = int(self.port[1:])
+
         self.irc.connect((self.server, self.port))
-        self.log(self.irc.recv(4096))
-        self.irc.send('NICK ' + self.nick + '\r\n')
-        self.irc.send('USER ' + self.name + ' 8 * :Warmachine\r\n')
+
+
+        self.rawsend('NICK ' + self.nick + '\r\n')
+        self.rawsend('USER ' + self.name + ' 8 * :Warmachine\r\n')
+
+        if self.password:
+            self.rawsend('PASS %s\r\n' % (self.password))
+
+        self.rawsend('\r\n')
 
     def join(self, chan):
         """
@@ -55,6 +77,7 @@ class IRC(object):
         """
         Sends commands straight to the irc server.
         """
+        self.log(command)
         self.irc.send(command + '\r\n')
 
     def load_actions(self):

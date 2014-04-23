@@ -9,7 +9,7 @@ NICKNAME = 'warmachine'
 NICKSERV_PASSWORD =''
 
 SERVER = 'irc.freenode.org'
-PORT = 6667
+PORT = "+6667"
 IDENT = 'warmachine'
 PASSWORD = os.environ['PASSWORD']
 
