@@ -9,8 +9,11 @@ if __name__ == '__main__':
     c = connection.cursor()
 
     # check to see if a table exists
-    is_installed = bool(c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='warmachine_settings'").fetchone())
-    print is_installed
+    is_installed = bool(c.execute("SELECT name FROM sqlite_master WHERE "
+                                  "type='table' AND name='warmachine_settings'"
+                                  ).fetchone()
+    )
+
     if not is_installed:
         c.execute("""CREATE TABLE warmachine_settings (
                         key text,
@@ -28,8 +31,10 @@ if __name__ == '__main__':
                         );
         """)
 
-    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT, settings.PORT)
+    i = IRC(settings.SERVER, settings.NICKNAME, settings.IDENT,
+            settings.PASSWORD, settings.PORT,)
     i.connect()
+    import time; time.sleep(10)
     for channel in settings.CHANNELS:
         i.join(channel)
     i()

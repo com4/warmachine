@@ -2,7 +2,7 @@ __author__ = 'jason@zzq.org'
 __version__ = 1.0
 
 import urllib2
-import simplejson
+import json as simplejson
 
 from wmd.actions import Action
 
