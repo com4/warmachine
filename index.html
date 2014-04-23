@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+
+    <link href="stylesheets/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="font-awesome/css/font-awesome.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="javascripts/prettify.js"></script>
+
+    <title>warmachine</title>
+</head>
+
+<body onload="prettyPrint()">
+
+<header>
+    <div class="container">
+        <h1><i class="icon-bolt"></i> warmachine</h1>
+        <h2>a python developer's irc bot</h2>
+
+        <section id="downloads">
+            <a href="http://antitech.github.com/" class="btn"><span class="icon icon-cloud"></span>antitech.</a>
+            <a href="https://github.com/antitech/warmachine/" class="btn"><span class="icon icon-github"></span>contribute.</a>
+            <a href="https://github.com/antitech/warmachine/wiki/Plugins" class="btn"><span class="icon icon-cogs"></span>plugins.</a>
+            <a href="https://github.com/antitech/warmachine/issues/" class="btn"><span class="icon icon-lemon"></span>issues.</a>
+
+        </section>
+    </div>
+</header>
+
+<div class="container">
+    <section id="main_content">
+        <h3>install.</h3>
+
+        <pre><code class="prettyprint">git clone git://github.com/antitech/warmachine.git
+cd warmachine
+vim settings.py
+./warmachine</code></pre>
+
+        <h3>no bullshit.</h3>
+
+        <p>The philosophy behind warmachine is to get out of your way and let you code. A developer shouldn't be
+           required to learn an over-sized API just to print hello world on the screen. You know Python, so you know how
+           to write warmachine plugins. All you have to do is write a method that listens for your trigger and go on
+           about your day.</p>
+
+        <pre><code class="prettyprint">from wmd.actions import Action
+
+class HelloWorldAction(Action):
+
+    def recv_msg(self, irc, obj_data):
+        channel = obj_data.get_username()
+        args = obj_data.params.split(" ")
+        if "PRIVMSG" in obj_data.command and ":!helloworld" in args[1].lower():
+            # ... my awesome code
+            irc.privmsg(channel, "Hello World!")
+            return</code></pre>
+    </section>
+
+</div>
+
+
+
+
+</body></html>

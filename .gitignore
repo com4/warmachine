@@ -1,7 +1,6 @@
 *.pyc
 *.swp
 local_settings.py
-.idea
 *.db
 .DS_Store
 *.vim
@@ -19,3 +18,4 @@ bin/
 .buildpath
 globalstatic/
 media/
+.idea
