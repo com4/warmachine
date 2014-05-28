@@ -17,7 +17,7 @@ CHANNELS = ('#lobby',)
 
 ADMINS = ('jason',)
 
-DB_PATH = "enderlabs.db"
+DB_PATH = "warmachine.db"
 
 ACTIONS = (
     'wmd.actions.passive.pong.RespondToPing',
